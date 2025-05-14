@@ -30,13 +30,13 @@ export default function UrlInput({ onAnalyze, isLoading, error }: UrlInputProps)
       <CardContent className="p-6">
         <form onSubmit={handleSubmit} className="flex flex-col md:flex-row gap-3">
           <div className="flex-grow relative">
-            <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none text-slate-400">
-              <GlobeIcon className="h-5 w-5" />
+            <div className="absolute inset-y-0 left-0 flex items-center justify-center pl-3 pointer-events-none text-slate-400" style={{ top: '50%', transform: 'translateY(-50%)' }}>
+              <GlobeIcon className="h-5 w-5" aria-hidden="true" />
             </div>
             <Input
               type="url"
               placeholder="Enter website URL (e.g., https://example.com)"
-              className="pl-10 py-6"
+              className="pl-10 py-6 h-auto"
               value={url}
               onChange={(e) => setUrl(e.target.value)}
               required
