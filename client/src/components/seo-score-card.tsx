@@ -56,29 +56,31 @@ export default function SEOScoreCard({ analysis }: SEOScoreCardProps) {
       <div className="flex flex-col lg:flex-row">
         <div className="p-6 lg:w-1/3 flex flex-col items-center justify-center bg-slate-50 border-b lg:border-b-0 lg:border-r border-slate-200">
           <div className="relative flex flex-col items-center">
-            <svg className="w-40 h-40 md:w-48 md:h-48" viewBox="0 0 36 36">
-              <path
-                d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
-                fill="none"
-                stroke="#e2e8f0"
-                strokeWidth="3"
-              />
-              <path
-                d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
-                fill="none"
-                className={getScoreColor()}
-                strokeWidth="3"
-                strokeDasharray={`${circumference}, ${circumference}`}
-                strokeDashoffset={dashOffset}
-                strokeLinecap="round"
-              />
-              <text x="18" y="18" className="text-xl font-bold" textAnchor="middle" fill="#1e293b">
-                {analysis.score}
-              </text>
-              <text x="18" y="23" className="text-xs" textAnchor="middle" fill="#64748b">
-                / 100
-              </text>
-            </svg>
+            <div className="relative">
+              <svg className="w-40 h-40 md:w-48 md:h-48" viewBox="0 0 36 36">
+                <path
+                  d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+                  fill="none"
+                  stroke="#e2e8f0"
+                  strokeWidth="3"
+                />
+                <path
+                  d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+                  fill="none"
+                  className={getScoreColor()}
+                  strokeWidth="3"
+                  strokeDasharray={`${circumference}, ${circumference}`}
+                  strokeDashoffset={dashOffset}
+                  strokeLinecap="round"
+                />
+              </svg>
+              <div className="absolute inset-0 flex flex-col items-center justify-center">
+                <span className="text-3xl font-bold text-slate-800">
+                  {analysis.score}
+                </span>
+                <span className="text-xs text-slate-500">/ 100</span>
+              </div>
+            </div>
             <div className="text-center mt-3">
               <p className="text-slate-800 font-semibold text-xl mb-1">SEO Score</p>
               <p className={`${getScoreTextColor()} font-medium`}>
