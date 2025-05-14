@@ -24,14 +24,19 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.status(400).json({ message: "URL parameter is required" });
       }
       
-      // Validate URL format
-      if (!validateUrl(url)) {
+      // Validate URL format and add http:// if missing
+      let validatedUrl = url;
+      if (!url.startsWith('http://') && !url.startsWith('https://')) {
+        validatedUrl = 'https://' + url;
+      }
+      
+      if (!validateUrl(validatedUrl)) {
         return res.status(400).json({ message: "Invalid URL format" });
       }
       
       // Fetch HTML from the URL
       try {
-        const response = await fetch(url, {
+        const response = await fetch(validatedUrl, {
           headers: {
             'User-Agent': 'Mozilla/5.0 (compatible; SEOAnalyzer/1.0; +http://example.com)'
           }

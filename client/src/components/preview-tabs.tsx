@@ -131,7 +131,7 @@ export default function PreviewTabs({ analysis }: PreviewTabsProps) {
             )}
             <div className="p-3 bg-[#f2f3f5]">
               <p className="text-[#606770] text-xs uppercase tracking-wide">
-                {new URL(analysis.url).hostname}
+                {analysis.url && analysis.url.startsWith('http') ? new URL(analysis.url).hostname : 'website.com'}
               </p>
               <p className="text-[#1d2129] font-medium leading-tight my-1">
                 {ogTitle}
@@ -212,7 +212,7 @@ export default function PreviewTabs({ analysis }: PreviewTabsProps) {
             )}
             <div className="p-3 bg-white">
               <p className="text-[#536471] text-sm mb-1">
-                {new URL(analysis.url).hostname}
+                {analysis.url && analysis.url.startsWith('http') ? new URL(analysis.url).hostname : 'website.com'}
               </p>
               <p className="text-[#0f1419] font-medium leading-tight mb-1">
                 {twitterTitle}
