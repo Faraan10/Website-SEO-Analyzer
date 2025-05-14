@@ -17,6 +17,13 @@ export default function SEOScoreCard({ analysis }: SEOScoreCardProps) {
     if (analysis.score >= 50) return "stroke-warning";
     return "stroke-error";
   };
+
+  // Get color for text based on score
+  const getScoreTextColor = () => {
+    if (analysis.score >= 80) return "text-success";
+    if (analysis.score >= 50) return "text-warning";
+    return "text-error";
+  };
   
   // Get the appropriate icon and background based on status
   const getStatusIcon = (status: 'good' | 'warning' | 'error') => {
@@ -24,27 +31,32 @@ export default function SEOScoreCard({ analysis }: SEOScoreCardProps) {
       case 'good':
         return {
           bg: "bg-success",
-          icon: <CheckIcon className="text-white text-xs" />
+          icon: <CheckIcon className="text-white" size={14} />
         };
       case 'warning':
         return {
           bg: "bg-warning",
-          icon: <AlertTriangleIcon className="text-white text-xs" />
+          icon: <AlertTriangleIcon className="text-white" size={14} />
         };
       case 'error':
         return {
           bg: "bg-error",
-          icon: <XIcon className="text-white text-xs" />
+          icon: <XIcon className="text-white" size={14} />
         };
     }
   };
 
+  // Count different status types
+  const goodCount = analysis.summaryPoints.filter(point => point.status === 'good').length;
+  const warningCount = analysis.summaryPoints.filter(point => point.status === 'warning').length;
+  const errorCount = analysis.summaryPoints.filter(point => point.status === 'error').length;
+
   return (
-    <Card className="max-w-3xl mx-auto mb-8 overflow-hidden">
-      <div className="flex flex-col md:flex-row">
-        <div className="p-6 md:w-1/3 flex flex-col items-center justify-center bg-slate-50">
-          <div className="relative">
-            <svg className="w-32 h-32" viewBox="0 0 36 36">
+    <Card className="max-w-5xl mx-auto mb-8 overflow-hidden shadow-md">
+      <div className="flex flex-col lg:flex-row">
+        <div className="p-6 lg:w-1/3 flex flex-col items-center justify-center bg-slate-50 border-b lg:border-b-0 lg:border-r border-slate-200">
+          <div className="relative flex flex-col items-center">
+            <svg className="w-40 h-40 md:w-48 md:h-48" viewBox="0 0 36 36">
               <path
                 d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
                 fill="none"
@@ -60,25 +72,48 @@ export default function SEOScoreCard({ analysis }: SEOScoreCardProps) {
                 strokeDashoffset={dashOffset}
                 strokeLinecap="round"
               />
-              <text x="18" y="20.35" className="text-3xl font-bold" textAnchor="middle" fill="#1e293b">
+              <text x="18" y="18" className="text-xl font-bold" textAnchor="middle" fill="#1e293b">
                 {analysis.score}
               </text>
+              <text x="18" y="23" className="text-xs" textAnchor="middle" fill="#64748b">
+                / 100
+              </text>
             </svg>
-          </div>
-          <div className="text-center mt-2">
-            <p className="text-slate-800 font-semibold text-lg">SEO Score</p>
-            <p className="text-slate-500 text-sm">Based on meta tag implementation</p>
+            <div className="text-center mt-3">
+              <p className="text-slate-800 font-semibold text-xl mb-1">SEO Score</p>
+              <p className={`${getScoreTextColor()} font-medium`}>
+                {analysis.score >= 80 ? 'Excellent' : analysis.score >= 60 ? 'Good' : analysis.score >= 40 ? 'Needs Improvement' : 'Poor'}
+              </p>
+              <p className="text-slate-500 text-sm mt-1">Based on meta tag implementation</p>
+            </div>
           </div>
         </div>
         
-        <div className="p-6 md:w-2/3">
+        <div className="p-6 lg:w-2/3">
           <h2 className="text-xl font-bold text-slate-800 mb-4">Analysis Summary</h2>
-          <div className="space-y-3">
+          
+          {/* Status Counters */}
+          <div className="grid grid-cols-3 gap-3 mb-5">
+            <div className="bg-green-50 p-3 rounded-lg border border-green-100 text-center">
+              <div className="text-2xl font-bold text-success">{goodCount}</div>
+              <div className="text-sm text-slate-600">Passed</div>
+            </div>
+            <div className="bg-amber-50 p-3 rounded-lg border border-amber-100 text-center">
+              <div className="text-2xl font-bold text-warning">{warningCount}</div>
+              <div className="text-sm text-slate-600">Warnings</div>
+            </div>
+            <div className="bg-red-50 p-3 rounded-lg border border-red-100 text-center">
+              <div className="text-2xl font-bold text-error">{errorCount}</div>
+              <div className="text-sm text-slate-600">Failed</div>
+            </div>
+          </div>
+          
+          <div className="space-y-3 mt-5">
             {analysis.summaryPoints.map((point, index) => {
               const { bg, icon } = getStatusIcon(point.status);
               return (
-                <div key={index} className="flex items-center">
-                  <div className={`w-6 h-6 rounded-full ${bg} flex items-center justify-center mr-3`}>
+                <div key={index} className="flex items-start">
+                  <div className={`w-6 h-6 rounded-full ${bg} flex items-center justify-center mt-0.5 flex-shrink-0 mr-3`}>
                     {icon}
                   </div>
                   <p className="text-slate-700">{point.message}</p>
