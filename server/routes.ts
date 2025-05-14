@@ -5,6 +5,14 @@ import * as cheerio from "cheerio";
 import fetch from "node-fetch";
 import { SEOMetaTag, SEOAnalysis } from "@shared/schema";
 import { getCanonicalUrl, getTitle, getMetaDescription, extractMetaTags, validateUrl } from "./seo-utils";
+import {
+  analyzeTitleTag,
+  analyzeDescriptionTag,
+  analyzeOpenGraphTags,
+  analyzeTwitterCardTags,
+  calculateSEOScore,
+  generateRecommendations
+} from "./seo-analyzer";
 
 export async function registerRoutes(app: Express): Promise<Server> {
   // SEO Analyzer API route
@@ -80,16 +88,6 @@ function analyzeMetaTags(data: {
   description?: string;
   metaTags: SEOMetaTag[];
 }): SEOAnalysis {
-  // Import analyzer functions from front-end to maintain consistency
-  const {
-    analyzeTitleTag,
-    analyzeDescriptionTag,
-    analyzeOpenGraphTags,
-    analyzeTwitterCardTags,
-    calculateSEOScore,
-    generateRecommendations
-  } = require('../client/src/lib/seo-analyzer');
-  
   // Generate summary points
   const titleAnalysis = analyzeTitleTag(data.title);
   const descriptionAnalysis = analyzeDescriptionTag(data.description);
